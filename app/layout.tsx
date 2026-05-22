@@ -1,29 +1,30 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
-
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { getMessages } from 'next-intl/server'
+import { NextIntlClientProvider } from "next-intl";
+import Sidebar from "@/components/Sidebar";
+import { Toaster } from "react-hot-toast";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const messages = await getMessages()
   return (
     <html
-      lang="en"
+      lang="fa"
+      dir="rtl"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
-    >
+      className="scroll-smooth">
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+          <Sidebar />
+          <Toaster position="top-left" reverseOrder={false} />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

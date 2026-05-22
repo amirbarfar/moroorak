@@ -1,19 +1,23 @@
-import { Button } from "@/components/ui/button"
+"use client";
 
-export default function Page() {
+import Footer from "@/components/home/Footer";
+import HeroSection from "@/components/home/HeroSection";
+import { features } from "@/constants/features";
+import FeatureSection from "@/components/home/FeatureSection";
+
+const toFarsiDate = () =>
+  new Intl.DateTimeFormat("fa-IR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date());
+
+export default function HomePage() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <main className="min-h-screen bg-background text-foreground overflow-hidden">
+      <HeroSection date={toFarsiDate()} features={features} navStats={{}} />
+      <div className="container mx-auto px-6 space-y-20 md:space-y-40">
+        {features.map((f, i) => (
+          <FeatureSection key={f.id} {...f} reverse={i % 2 === 1} />
+        ))}
       </div>
-    </div>
-  )
+      <Footer />
+    </main>
+  );
 }
