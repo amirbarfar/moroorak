@@ -1,21 +1,21 @@
-# Next.js template
+# moroorak
 
-This is a Next.js template with shadcn/ui.
+Moroorak is a project that helps you document everything you learn. No more worrying about forgetting things — the system will remind you.
 
-## Adding components
+With this app, you can:
 
-To add components to your app, run the following command:
+Save your notes: Write down any topic, tip, or experience you've learned.
 
-```bash
-npx shadcn@latest add button
-```
+Set reminders: The system tells you when to come back and review your materials (active recall).
 
-This will place the ui components in the `components` directory.
+Plan your schedule: Manage your daily, weekly, and long-term tasks.
 
-## Using components
+Use Pomodoro technique: A built-in Pomodoro timer helps you stay focused and take regular breaks.
 
-To use the components in your app, import them as follows:
+Write your daily journal: Like a personal journal, record whatever happens in your day.
 
-```tsx
-import { Button } from "@/components/ui/button";
-```
+Privacy first: Your messages and notes are encrypted. Even I, as the developer, cannot access them.
+
+The idea behind it is that learning isn't just about memorizing — it needs time and repetition. Moroorak helps you maintain that cycle without missing anything.
+
+It's for students, programmers, or anyone who wants to learn more effectively and manage their daily life in an organized way.
