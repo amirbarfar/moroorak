@@ -9,27 +9,32 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "ایمیل معتبر نیست" }, { status: 400 });
   }
 
-  let user = await prisma.user.findUnique({ where: { email } });
+  try {
+    let user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user) {
-    user = await prisma.user.create({ data: { email } });
+    if (!user) {
+      user = await prisma.user.create({ data: { email } });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await prisma.session.deleteMany({
+      where: { userId: user.id, isVerified: false },
+    });
+
+    await prisma.session.create({
+      data: {
+        userId: user.id,
+        otp,
+        otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
+      },
+    });
+
+    await sendOtpEmail(email, otp);
+
+    return NextResponse.json({ message: "کد تایید ارسال شد", email });
+  } catch (err) {
+    console.error("[send-otp error]", err);
+    return NextResponse.json({ error: "خطای سرور", detail: String(err) }, { status: 500 });
   }
-
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-  await prisma.session.deleteMany({
-    where: { userId: user.id, isVerified: false },
-  });
-
-  await prisma.session.create({
-    data: {
-      userId: user.id,
-      otp,
-      otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
-    },
-  });
-
-  await sendOtpEmail(email, otp);
-
-  return NextResponse.json({ message: "کد تایید ارسال شد", email });
 }
