@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { X, User, Mail, Tag, Save } from "lucide-react";
+import { X, User, Mail, Tag } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import NotificationButton from "@/components/NotificationButton";
 
@@ -24,6 +24,8 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     }
   }, [user]);
 
+  const t = useTranslations("profile");
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +46,6 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     setLoading(false);
   };
 
-  const t = useTranslations("profile");
   const tags = ["برنامه‌نویس", "طراح", "نویسنده", "دانشجو", "کارآفرین", "مدرس"];
 
   return (
@@ -101,18 +102,18 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                 {t("tagLabel")}
               </label>
               <div className="flex flex-wrap gap-2">
-                {tags.map((t) => (
+                {tags.map((tagOption) => (
                   <button
-                    key={t}
+                    key={tagOption}
                     type="button"
-                    onClick={() => setTag(t)}
+                    onClick={() => setTag(tagOption)}
                     className={`px-3 py-1 rounded-full text-xs transition-all ${
-                      tag === t
+                      tag === tagOption
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    {t}
+                    {tagOption}
                   </button>
                 ))}
               </div>

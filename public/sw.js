@@ -23,6 +23,9 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  if (!e.request.url.startsWith('http://') && !e.request.url.startsWith('https://')) {
+    return; 
+  }
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
   if (url.pathname.startsWith("/api/")) return;
