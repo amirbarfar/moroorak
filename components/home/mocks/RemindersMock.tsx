@@ -12,12 +12,12 @@ const items = [
 ];
 
 export default function RemindersMock() {
-  const [ring, setRing] = useState(false);
+  const [show, setShow] = useState(0);
   useEffect(() => {
     const t = setInterval(() => {
-      setRing(true);
-      setTimeout(() => setRing(false), 600);
-    }, 2200);
+      setShow((s) => s <= items.length ? s + 1 : 0);
+      return () => clearInterval(t);
+    }, 1800);
     return () => clearInterval(t);
   }, []);
   return (
@@ -25,11 +25,10 @@ export default function RemindersMock() {
       <CardContent className="space-y-3 p-8">
         <div className="flex items-center justify-between mb-2">
           <Badge variant="outline" className="rounded-full px-3 py-1 text-xs">یادآورهای فعال</Badge>
-          <Bell className={`h-5 w-5 text-primary transition-transform duration-150 ${ring ? "rotate-12 scale-125" : "rotate-0 scale-100"}`} />
         </div>
         {items.map((item, i) => (
           <div key={i} className="flex items-center gap-3 rounded-2xl border border-border/60 p-3.5">
-            <div className={`h-2 w-2 rounded-full shrink-0 ${item.active ? "bg-emerald-500 animate-pulse" : "bg-muted-foreground/30"}`} />
+            <div className={`h-2 w-2 rounded-full shrink-0 ${show >= i ? "bg-emerald-500" : "bg-white"}`} />
             <div className="flex-1">
               <p className="text-sm font-semibold">{item.title}</p>
               <p className="text-xs text-muted-foreground">{item.time} — {item.active ? "روزانه" : "غیرفعال"}</p>

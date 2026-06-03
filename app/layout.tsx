@@ -4,6 +4,23 @@ import { getMessages } from 'next-intl/server'
 import { NextIntlClientProvider } from "next-intl";
 import Sidebar from "@/components/Sidebar";
 import { Toaster } from "react-hot-toast";
+import ServiceWorker from "@/components/ServiceWorker";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "مروارک",
+  description: "اپ بهره‌وری شخصی",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "مروارک",
+  },
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
+  },
+};
 
 export default async function RootLayout({
   children,
@@ -24,6 +41,7 @@ export default async function RootLayout({
           </ThemeProvider>
           <Sidebar />
           <Toaster position="top-left" reverseOrder={false} />
+          <ServiceWorker />
         </NextIntlClientProvider>
       </body>
     </html>

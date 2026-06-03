@@ -29,7 +29,8 @@ export function PersianTimePicker({ value, onChange }: PersianTimePickerProps) {
     );
 
     return (
-        <div 
+        <div
+            dir="ltr"
             className="flex items-center justify-center h-11 w-full rounded-xl border border-input bg-background px-3 ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
         >
             <Select

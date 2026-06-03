@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendOtpEmail } from "@/lib/sendEmail";
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log(`OTP for ${email}: ${otp}`);
+  await sendOtpEmail(email, otp);
 
   return NextResponse.json({ message: "کد تایید ارسال شد", email });
 }

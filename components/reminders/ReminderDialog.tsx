@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import {
   Dialog,
   DialogContent,
@@ -29,18 +32,20 @@ interface ReminderDialogProps {
 }
 
 export default function ReminderDialog({ open, onOpenChange, editingReminder, form, onChange, onSave }: ReminderDialogProps) {
+  const t = useTranslations("reminders.dialog");
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-[28px] sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl font-black">
-            {editingReminder ? "ویرایش یادآور" : "یادآور جدید"}
+            {editingReminder ? t("editTitle") : t("addTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5 pt-2">
           <Input
-            placeholder="مثلاً: آب خوردن، مطالعه، ورزش..."
+            placeholder={t("titlePlaceholder")}
             value={form.title}
             onChange={(e) => onChange("title", e.target.value)}
             className="h-12 rounded-2xl"
@@ -48,19 +53,19 @@ export default function ReminderDialog({ open, onOpenChange, editingReminder, fo
           />
 
           <Textarea
-            placeholder="یه توضیح کوتاه (اختیاری)..."
+            placeholder={t("notePlaceholder")}
             value={form.note}
             onChange={(e) => onChange("note", e.target.value)}
             className="min-h-24 rounded-2xl resize-none"
           />
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium">ساعت یادآوری</Label>
+            <Label className="text-sm font-medium">{t("timeLabel")}</Label>
             <PersianTimePicker value={form.time} onChange={(v) => onChange("time", v)} />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium">تکرار</Label>
+            <Label className="text-sm font-medium">{t("repeatLabel")}</Label>
             <div className="flex gap-2">
               {(["روزانه", "یکبار"] as RepeatType[]).map((r) => (
                 <button
@@ -77,7 +82,7 @@ export default function ReminderDialog({ open, onOpenChange, editingReminder, fo
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium">اولویت</Label>
+            <Label className="text-sm font-medium">{t("priorityLabel")}</Label>
             <div className="flex gap-2">
               {(["high", "medium", "low"] as Priority[]).map((p) => (
                 <button
@@ -94,7 +99,7 @@ export default function ReminderDialog({ open, onOpenChange, editingReminder, fo
           </div>
 
           <Button onClick={onSave} className="h-12 w-full rounded-2xl font-bold">
-            {editingReminder ? "ذخیره تغییرات" : "افزودن یادآور"}
+            {editingReminder ? t("save") : t("add")}
           </Button>
         </div>
       </DialogContent>
