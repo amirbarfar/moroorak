@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { PersianTimePicker } from "@/components/ui/persian-time-picker";
+import { Loader2 } from "lucide-react";
 import { Task } from "./types";
 
 interface TaskDialogProps {
@@ -20,6 +21,7 @@ interface TaskDialogProps {
   onDescriptionChange: (value: string) => void;
   onTimeChange: (value: string) => void;
   onSave: () => void;
+  isLoading?: boolean;
 }
 
 export default function TaskDialog({
@@ -33,6 +35,7 @@ export default function TaskDialog({
   onDescriptionChange,
   onTimeChange,
   onSave,
+  isLoading = false,
 }: TaskDialogProps) {
   const t = useTranslations("planning.dialog");
 
@@ -73,9 +76,10 @@ export default function TaskDialog({
 
           <Button
             onClick={onSave}
+            disabled={isLoading}
             className="h-9 w-full rounded-lg text-sm font-medium mt-2"
           >
-            {editingTask ? t("save") : t("add")}
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : editingTask ? t("save") : t("add")}
           </Button>
         </div>
       </DialogContent>

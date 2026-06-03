@@ -15,7 +15,13 @@ export async function POST(request: Request) {
 
     const userId = await getUserId();
 
-    const savedSub = await prisma.pushSubscription.upsert({
+    if (userId) {
+      await prisma.pushSubscription.deleteMany({
+        where: { userId, NOT: { endpoint: subscription.endpoint } },
+      });
+    }
+
+    await prisma.pushSubscription.upsert({
       where: {
         endpoint: subscription.endpoint,
       },
@@ -30,16 +36,25 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'اشتراک با موفقیت ثبت شد.' 
-    });
-
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('خطا در کار با پریسما:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { endpoint } = await request.json();
+    if (!endpoint) {
+      return NextResponse.json({ error: 'endpoint الزامی است' }, { status: 400 });
+    }
+
+    await prisma.pushSubscription.deleteMany({ where: { endpoint } });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('خطا در حذف subscription:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

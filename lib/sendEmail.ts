@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export async function sendOtpEmail(to: string, otp: string) {
   await transporter.sendMail({
-    from: `"مرورک" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+    from: `"Moroorak" ${process.env.SMTP_FROM || process.env.SMTP_USER}`,
     to,
     subject: "کد ورود به مرورک",
     html: `

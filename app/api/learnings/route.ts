@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/auth";
 import { LearningSchema } from "@/lib/validations/schemas";
+import { todayTehran } from "@/lib/utils";
 
 export async function GET() {
   const userId = await getUserId();
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { title, description, tag } = parsed.data;
-  const date = new Date().toISOString().split("T")[0];
+  const date = todayTehran();
 
   const item = await prisma.learningItem.create({
     data: { userId, title, description: description ?? "", date, tag },

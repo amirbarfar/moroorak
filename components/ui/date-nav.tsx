@@ -1,6 +1,7 @@
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { todayTehran } from "@/lib/utils";
 
 interface DateNavProps {
   selectedDate: string;
@@ -11,7 +12,7 @@ interface DateNavProps {
 }
 
 export default function DateNav({ selectedDate, onPrev, onNext, onToday, format = "compact" }: DateNavProps) {
-  const isToday = selectedDate === new Date().toISOString().split("T")[0];
+  const isToday = selectedDate === todayTehran();
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);

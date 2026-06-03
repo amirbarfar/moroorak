@@ -8,21 +8,30 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 
+
 interface PomodoroCardProps {
   focusTime?: number;
   shortBreakTime?: number;
   longBreakTime?: number;
 }
 
-function showPushNotification(title: string, body: string) {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then((reg) => {
-      reg.showNotification(title, {
-        body,
-        icon: '/icon.png',
-        badge: '/badge.png',
-      });
-    }).catch(() => null);
+function playDing() {
+  try {
+    const ctx = new AudioContext();
+    const gain = ctx.createGain();
+    gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0.6, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+
+    const osc = ctx.createOscillator();
+    osc.connect(gain);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 1.5);
+  } catch {
+    // browser blocked audio
   }
 }
 
@@ -77,7 +86,7 @@ export default function PomodoroCard({
         const newCount = completedPomodoros + 1;
         setCompletedPomodoros(newCount);
         api("/api/pomodoro", { method: "POST" }).catch(() => null);
-        showPushNotification(t("notifFocusDone"), t("notifFocusDoneBody"));
+        playDing();
 
         if (newCount % 4 === 0) {
           switchMode("longBreak");
@@ -85,7 +94,7 @@ export default function PomodoroCard({
           switchMode("shortBreak");
         }
       } else {
-        showPushNotification(t("notifBreakDone"), t("notifBreakDoneBody"));
+        playDing();
         switchMode("focus");
       }
     }

@@ -52,7 +52,10 @@ export function PersianDatePicker({
 
   const handleSelect = (day: Date) => {
     setSelectedDate(day);
-    onChange(day.toISOString().split("T")[0]);
+    const y = day.getFullYear();
+    const m = String(day.getMonth() + 1).padStart(2, '0');
+    const d = String(day.getDate()).padStart(2, '0');
+    onChange(`${y}-${m}-${d}`);
     setOpen(false);
   };
 

@@ -10,11 +10,12 @@ import { useTranslations } from "next-intl";
 import { api } from "@/lib/api";
 import { useFormSubmit } from "@/hooks/useFormSubmit";
 import { JournalSchema, JournalFormData } from "@/lib/validations/schemas";
+import { todayTehran } from "@/lib/utils";
 
 export default function JournalPage() {
   const t = useTranslations("journal");
   const [selectedDate, setSelectedDate] = useState(() => {
-    return new Date().toISOString().split("T")[0];
+    return todayTehran();
   });
 
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -69,7 +70,7 @@ export default function JournalPage() {
   };
 
   const goToday = () => {
-    setSelectedDate(new Date().toISOString().split("T")[0]);
+    setSelectedDate(todayTehran());
   };
 
   const saveEntry = () => {

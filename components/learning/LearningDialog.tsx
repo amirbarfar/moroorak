@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ALL_TAGS, LearningItem, Tag } from "./types";
@@ -21,6 +22,7 @@ interface LearningDialogProps {
   onDescriptionChange: (value: string) => void;
   onTagChange: (tag: Tag) => void;
   onSave: () => void;
+  isLoading?: boolean;
 }
 
 export default function LearningDialog({
@@ -34,6 +36,7 @@ export default function LearningDialog({
   onDescriptionChange,
   onTagChange,
   onSave,
+  isLoading = false,
 }: LearningDialogProps) {
   const t = useTranslations("learning.dialog");
 
@@ -81,8 +84,8 @@ export default function LearningDialog({
             </div>
           </div>
 
-          <Button onClick={onSave} className="h-12 w-full rounded-2xl font-bold">
-            {editingItem ? t("save") : t("add")}
+          <Button onClick={onSave} disabled={isLoading} className="h-12 w-full rounded-2xl font-bold">
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : editingItem ? t("save") : t("add")}
           </Button>
         </div>
       </DialogContent>

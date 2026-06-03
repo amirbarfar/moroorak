@@ -10,8 +10,7 @@ import { LearningItem, Tag } from "@/components/learning/types";
 import { api } from "@/lib/api";
 import { useFormSubmit } from "@/hooks/useFormSubmit";
 import { LearningSchema, LearningFormData } from "@/lib/validations/schemas";
-
-const todayKey = () => new Date().toISOString().split("T")[0];
+import { todayTehran as todayKey } from "@/lib/utils";
 
 export default function LearningPage() {
   const t = useTranslations("learning");
@@ -59,7 +58,7 @@ export default function LearningPage() {
     setEditingItem(null);
   };
 
-  const { submit: submitLearning } = useFormSubmit<LearningFormData>({
+  const { submit: submitLearning, isLoading: savingLearning } = useFormSubmit<LearningFormData>({
     schema: LearningSchema,
     endpoint: editingItem ? `/api/learnings/${editingItem.id}` : "/api/learnings",
     method: editingItem ? "PATCH" : "POST",
@@ -143,6 +142,7 @@ export default function LearningPage() {
         onDescriptionChange={setDescription}
         onTagChange={setTag}
         onSave={handleSave}
+        isLoading={savingLearning}
       />
     </main>
   );

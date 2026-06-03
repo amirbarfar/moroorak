@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -29,9 +30,10 @@ interface ReminderDialogProps {
   form: ReminderForm;
   onChange: <K extends keyof ReminderForm>(key: K, value: ReminderForm[K]) => void;
   onSave: () => void;
+  isLoading?: boolean;
 }
 
-export default function ReminderDialog({ open, onOpenChange, editingReminder, form, onChange, onSave }: ReminderDialogProps) {
+export default function ReminderDialog({ open, onOpenChange, editingReminder, form, onChange, onSave, isLoading = false }: ReminderDialogProps) {
   const t = useTranslations("reminders.dialog");
 
   return (
@@ -98,8 +100,8 @@ export default function ReminderDialog({ open, onOpenChange, editingReminder, fo
             </div>
           </div>
 
-          <Button onClick={onSave} className="h-12 w-full rounded-2xl font-bold">
-            {editingReminder ? t("save") : t("add")}
+          <Button onClick={onSave} disabled={isLoading} className="h-12 w-full rounded-2xl font-bold">
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : editingReminder ? t("save") : t("add")}
           </Button>
         </div>
       </DialogContent>

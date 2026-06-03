@@ -10,9 +10,10 @@ import { Task } from "@/components/planning/types";
 import { api } from "@/lib/api";
 import { useFormSubmit } from "@/hooks/useFormSubmit";
 import { TaskSchema, TaskFormData } from "@/lib/validations/schemas";
+import { todayTehran } from "@/lib/utils";
 
 export default function PlanningPage() {
-  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [selectedDate, setSelectedDate] = useState(() => todayTehran());
   const [tasks, setTasks] = useState<Task[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -42,7 +43,7 @@ export default function PlanningPage() {
     setEditingTask(null);
   };
 
-  const { submit: submitTask } = useFormSubmit<TaskFormData>({
+  const { submit: submitTask, isLoading: savingTask } = useFormSubmit<TaskFormData>({
     schema: TaskSchema,
     endpoint: editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks",
     method: editingTask ? "PATCH" : "POST",
@@ -63,7 +64,7 @@ export default function PlanningPage() {
     setSelectedDate(date.toISOString().split("T")[0]);
   };
 
-  const goToday = () => setSelectedDate(new Date().toISOString().split("T")[0]);
+  const goToday = () => setSelectedDate(todayTehran());
 
   const handleSave = () =>
     submitTask({ date: selectedDate, title, description, time: time || "" });
@@ -160,6 +161,7 @@ export default function PlanningPage() {
         onDescriptionChange={setDescription}
         onTimeChange={setTime}
         onSave={handleSave}
+        isLoading={savingTask}
       />
     </main>
   );

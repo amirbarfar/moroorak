@@ -6,7 +6,7 @@ export const DateSchema = z.string().regex(
 );
 
 export const TimeSchema = z.string().regex(
-  /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 
+  /^([01][0-9]|2[0-3]):[0-5][0-9]$/,
   "زمان باید به فرمت HH:MM باشد"
 );
 

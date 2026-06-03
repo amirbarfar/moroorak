@@ -58,7 +58,7 @@ export default function RemindersPage() {
     setOpen(true);
   };
 
-  const { submit: submitReminder } = useFormSubmit<ReminderFormData>({
+  const { submit: submitReminder, isLoading: savingReminder } = useFormSubmit<ReminderFormData>({
     schema: ReminderSchema,
     endpoint: editingReminder ? `/api/reminders/${editingReminder.id}` : "/api/reminders",
     method: editingReminder ? "PATCH" : "POST",
@@ -137,6 +137,7 @@ export default function RemindersPage() {
         form={form}
         onChange={setField}
         onSave={handleSave}
+        isLoading={savingReminder}
       />
     </main>
   );

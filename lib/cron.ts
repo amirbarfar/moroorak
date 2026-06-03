@@ -1,8 +1,14 @@
-import cron from 'node-cron';
+import cron, { ScheduledTask } from 'node-cron';
 import { prisma } from './prisma';
 import { sendNotificationToUser } from './sendPush';
 
 const TZ = 'Asia/Tehran';
+
+const g = global as typeof globalThis & { _cronTasks?: ScheduledTask[] };
+if (g._cronTasks) {
+  g._cronTasks.forEach((t) => t.stop());
+}
+g._cronTasks = [];
 
 function nowHHMM(): string {
   return new Intl.DateTimeFormat('en-GB', {
@@ -14,21 +20,18 @@ function nowHHMM(): string {
 }
 
 function today(): string {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: TZ,
-  }).format(new Date());
+  return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date());
 }
 
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
-   
+
 // ──── یادآورها — هر دقیقه ────────────────────────────────────────────────────
-cron.schedule('* * * * *', async () => {
+g._cronTasks.push(cron.schedule('* * * * *', async () => {
   const time = nowHHMM();
   const date = today();
 
-  
   const reminders = await prisma.reminder.findMany({
     where: {
       enabled: true,
@@ -64,10 +67,10 @@ cron.schedule('* * * * *', async () => {
       },
     });
   }
-});
+}));
 
 // ──── برنامه‌ریزی — هر دقیقه ─────────────────────────────────────────────────
-cron.schedule('* * * * *', async () => {
+g._cronTasks.push(cron.schedule('* * * * *', async () => {
   const time = nowHHMM();
   const date = today();
 
@@ -89,10 +92,10 @@ cron.schedule('* * * * *', async () => {
       url: '/planning',
     });
   }
-});
+}));
 
 // ──── روزمره — هر شب ساعت ۲۱ ────────────────────────────────────────────────
-cron.schedule('0 21 * * *', async () => {
+g._cronTasks.push(cron.schedule('0 21 * * *', async () => {
   const date = today();
 
   const subs = await prisma.pushSubscription.findMany({
@@ -120,10 +123,10 @@ cron.schedule('0 21 * * *', async () => {
       });
     }
   }
-}, { timezone: TZ });
+}, { timezone: TZ }));
 
 // ──── یادگیری — هر صبح ساعت ۹ ───────────────────────────────────────────────
-cron.schedule('0 9 * * *', async () => {
+g._cronTasks.push(cron.schedule('0 9 * * *', async () => {
   const subs = await prisma.pushSubscription.findMany({
     where: { userId: { not: null } },
     select: { userId: true },
@@ -155,4 +158,4 @@ cron.schedule('0 9 * * *', async () => {
       url: '/learnings',
     });
   }
-}, { timezone: TZ });
+}, { timezone: TZ }));
