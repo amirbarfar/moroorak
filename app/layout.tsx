@@ -8,13 +8,13 @@ import ServiceWorker from "@/components/ServiceWorker";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "مروارک",
+  title: "مرورک",
   description: "اپ بهره‌وری شخصی",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "مروارک",
+    title: "مرورک",
   },
   icons: {
     icon: "/icon-192.png",
