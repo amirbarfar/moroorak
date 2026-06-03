@@ -126,7 +126,7 @@ g._cronTasks.push(cron.schedule('0 21 * * *', async () => {
 }, { timezone: TZ }));
 
 // ──── یادگیری — هر صبح ساعت ۹ ───────────────────────────────────────────────
-g._cronTasks.push(cron.schedule('0 9 * * *', async () => {
+g._cronTasks.push(cron.schedule('0 12 * * *', async () => {
   const subs = await prisma.pushSubscription.findMany({
     where: { userId: { not: null } },
     select: { userId: true },
