@@ -1,35 +1,30 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FocusTip } from "./types";
 
-const focusTips: FocusTip[] = [
-  {
-    title: "۱. فوکوس عمیق (۲۵ دقیقه)",
-    description: "• یک کار مشخص از لیست کارها انتخاب کن\n• گوشی رو در حالت پرواز بذار\n• تمام تب‌های غیرمرتبط مرورگر رو ببند\n• فقط و فقط روی اون یک کار تمرکز کن\n• هیچ چندکارگی ممنوع!",
-  },
-  {
-    title: "۲. استراحت کوتاه (۵ دقیقه)",
-    description: "• از صندلی بلند شو و چند قدم راه برو\n• آب یا چای سبک بنوش\n• به بیرون از پنجره نگاه کن (۲۰-۲۰ قانون)\n• به صفحه نمایش یا گوشی نگاه نکن!\n• چند نفس عمیق بکش",
-  },
-  {
-    title: "۳. استراحت بلند (۱۵-۳۰ دقیقه)",
-    description: "• این مرحله رو بعد از ۴ پومودورو انجام بده\n• یه وعده غذایی سبک بخور\n• مدیتیشن ۱۰ دقیقه‌ای انجام بده\n• یا یه چرت کوتاه (پاورنپ) بزن\n• این استراحت کلید بهره‌وری باقی روزه",
-  },
-];
-
 export default function FocusTips() {
+  const t = useTranslations("pomodoro.tips");
+
+  const focusTips: FocusTip[] = [
+    { title: t("focusTitle"), description: t("focusDesc") },
+    { title: t("shortBreakTitle"), description: t("shortBreakDesc") },
+    { title: t("longBreakTitle"), description: t("longBreakDesc") },
+  ];
+
   return (
     <div className="container mx-auto px-6 py-16">
       <div className="mb-10 flex flex-col gap-3 text-center">
         <Badge variant="secondary" className="mx-auto rounded-full px-3 py-1 text-xs">
-          روش کار پومودورو
+          {t("badge")}
         </Badge>
         <h2 className="text-2xl font-black tracking-tight sm:text-3xl md:text-4xl">
-          سیستم تمرکز حرفه‌ای
+          {t("title")}
         </h2>
         <p className="mx-auto max-w-3xl text-base leading-8 text-muted-foreground">
-          با تقسیم زمان به بازه‌های کوتاه اما شدید، مغز خسته نمی‌شود و تمرکز
-          در طول روز ثابت باقی می‌ماند.
+          {t("description")}
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -41,7 +36,7 @@ export default function FocusTips() {
             <CardContent className="space-y-4 p-6">
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="rounded-full px-3 py-0.5 text-xs">
-                  مرحله 0{index + 1}
+                  {t("stepBadge", { step: index + 1 })}
                 </Badge>
                 <div className="text-3xl font-black text-muted">0{index + 1}</div>
               </div>

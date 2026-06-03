@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { X, User, Mail, Tag, Save } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import NotificationButton from "@/components/NotificationButton";
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -42,6 +44,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     setLoading(false);
   };
 
+  const t = useTranslations("profile");
   const tags = ["برنامه‌نویس", "طراح", "نویسنده", "دانشجو", "کارآفرین", "مدرس"];
 
   return (
@@ -59,22 +62,22 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         <div className="p-6 pt-12">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold">پروفایل من</h2>
+              <h2 className="text-xl font-bold">{t("title")}</h2>
               <p className="text-sm text-muted-foreground">
-                اطلاعات خود را تکمیل کنید
+                {t("description")}
               </p>
             </div>
 
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium">
                 <User className="h-4 w-4" />
-                نام و نام خانوادگی
+                {t("nameLabel")}
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="مثلا: علی محمدی"
+                placeholder={t("namePlaceholder")}
                 className="w-full px-4 py-2 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
@@ -82,7 +85,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium">
                 <Mail className="h-4 w-4" />
-                ایمیل
+                {t("emailLabel")}
               </label>
               <input
                 type="email"
@@ -95,7 +98,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium">
                 <Tag className="h-4 w-4" />
-                تگ من
+                {t("tagLabel")}
               </label>
               <div className="flex flex-wrap gap-2">
                 {tags.map((t) => (
@@ -118,12 +121,18 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
             >
-              <Save className="h-4 w-4" />
-              {loading ? "در حال ذخیره..." : "ذخیره تغییرات"}
+              {loading ? t("saving") : t("save")}
             </button>
           </form>
+
+          <div className="mt-4 pt-4 border-t border-border space-y-2">
+            <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+              {t("browserNotifications")}
+            </p>
+            <NotificationButton />
+          </div>
         </div>
       </div>
     </div>

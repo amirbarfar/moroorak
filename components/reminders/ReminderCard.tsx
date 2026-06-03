@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +16,8 @@ interface ReminderCardProps {
 }
 
 export default function ReminderCard({ reminder, index, onEdit, onDelete, onToggle }: ReminderCardProps) {
+  const t = useTranslations("reminders.card");
+
   return (
     <Card className={`group rounded-[28px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${!reminder.enabled ? "opacity-50" : ""}`}>
       <CardContent className="space-y-5 p-8">
@@ -47,7 +52,7 @@ export default function ReminderCard({ reminder, index, onEdit, onDelete, onTogg
             onClick={() => onToggle(reminder.id)}
             className={`text-xs font-medium transition-colors ${reminder.enabled ? "text-emerald-600" : "text-muted-foreground"}`}
           >
-            {reminder.enabled ? "فعال" : "غیرفعال"}
+            {reminder.enabled ? t("enabled") : t("disabled")}
           </button>
           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <Button size="icon" variant="ghost" className="h-8 w-8 rounded-xl" onClick={() => onEdit(reminder)}>

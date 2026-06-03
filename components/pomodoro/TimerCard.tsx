@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -13,11 +14,24 @@ interface PomodoroCardProps {
   longBreakTime?: number;
 }
 
-export default function PomodoroCard({ 
+function showPushNotification(title: string, body: string) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then((reg) => {
+      reg.showNotification(title, {
+        body,
+        icon: '/icon.png',
+        badge: '/badge.png',
+      });
+    }).catch(() => null);
+  }
+}
+
+export default function PomodoroCard({
   focusTime = 25 * 60,
   shortBreakTime = 5 * 60,
   longBreakTime = 15 * 60
 }: PomodoroCardProps) {
+  const t = useTranslations("pomodoro.timer");
   const [mode, setMode] = useState<"focus" | "shortBreak" | "longBreak">("focus");
   const [timeLeft, setTimeLeft] = useState(focusTime);
   const [isActive, setIsActive] = useState(false);
@@ -63,6 +77,7 @@ export default function PomodoroCard({
         const newCount = completedPomodoros + 1;
         setCompletedPomodoros(newCount);
         api("/api/pomodoro", { method: "POST" }).catch(() => null);
+        showPushNotification(t("notifFocusDone"), t("notifFocusDoneBody"));
 
         if (newCount % 4 === 0) {
           switchMode("longBreak");
@@ -70,6 +85,7 @@ export default function PomodoroCard({
           switchMode("shortBreak");
         }
       } else {
+        showPushNotification(t("notifBreakDone"), t("notifBreakDoneBody"));
         switchMode("focus");
       }
     }
@@ -83,9 +99,9 @@ export default function PomodoroCard({
   const progress = ((getCurrentTime() - timeLeft) / getCurrentTime()) * 100;
   
   const stats = [
-    { label: "حالت فعلی", value: mode === "focus" ? "تمرکز" : mode === "shortBreak" ? " کوتاه" : " بلند" },
-    { label: "پومودورو", value: `${completedPomodoros}` },
-    { label: "پیشرفت", value: `${Math.round(progress)}%` },
+    { label: t("currentMode"), value: mode === "focus" ? t("modeFocus") : mode === "shortBreak" ? t("modeShort") : t("modeLong") },
+    { label: t("pomodoros"), value: `${completedPomodoros}` },
+    { label: t("progress"), value: `${Math.round(progress)}%` },
   ];
 
   return (
@@ -96,7 +112,7 @@ export default function PomodoroCard({
             variant="outline" 
             className="rounded-full px-3 py-0.5 text-xs text-blue-600 bg-blue-500/10 border-blue-500/30"
           >
-            {mode === "focus" ? "زمان تمرکز" : mode === "shortBreak" ? "استراحت کوتاه" : "استراحت بلند"}
+            {mode === "focus" ? t("focus") : mode === "shortBreak" ? t("shortBreak") : t("longBreak")}
           </Badge>
 
           <h2 className="text-3xl font-black tracking-tight sm:text-4xl md:text-5xl tabular-nums">
@@ -104,9 +120,9 @@ export default function PomodoroCard({
           </h2>
 
           <p className="text-xs text-muted-foreground">
-            {isActive 
-              ? mode === "focus" ? "در حال تمرکز عمیق..." : "در حال استراحت..."
-              : mode === "focus" ? "آماده‌ای شروع کنی؟" : "آماده برگشتن به تمرکز؟"}
+            {isActive
+              ? mode === "focus" ? t("activeFocus") : t("activeBreak")
+              : mode === "focus" ? t("readyFocus") : t("readyBack")}
           </p>
         </div>
 
@@ -129,7 +145,7 @@ export default function PomodoroCard({
               onClick={() => setIsActive(true)} 
               className="h-9 flex-1 rounded-xl text-xs font-bold bg-blue-500 hover:bg-blue-600"
             >
-              شروع
+              {t("start")}
             </Button>
           ) : (
             <Button 
@@ -137,7 +153,7 @@ export default function PomodoroCard({
               variant="outline" 
               className="h-9 flex-1 rounded-xl text-xs font-bold"
             >
-              مکث
+              {t("pause")}
             </Button>
           )}
           <Button 
@@ -145,7 +161,7 @@ export default function PomodoroCard({
             variant="secondary" 
             className="h-9 rounded-xl text-xs font-bold"
           >
-            ریست
+            {t("reset")}
           </Button>
         </div>
 
@@ -158,7 +174,7 @@ export default function PomodoroCard({
               mode === "focus" ? "bg-blue-500 hover:bg-blue-600" : ""
             }`}
           >
-            تمرکز
+            {t("focusBtn")}
           </Button>
           <Button
             size="sm"
@@ -168,7 +184,7 @@ export default function PomodoroCard({
               mode === "shortBreak" ? "bg-blue-500 hover:bg-blue-600" : ""
             }`}
           >
-            استراحت کوتاه
+            {t("shortBreakBtn")}
           </Button>
           <Button
             size="sm"
@@ -178,7 +194,7 @@ export default function PomodoroCard({
               mode === "longBreak" ? "bg-blue-500 hover:bg-blue-600" : ""
             }`}
           >
-            استراحت بلند
+            {t("longBreakBtn")}
           </Button>
         </div>
       </CardContent>

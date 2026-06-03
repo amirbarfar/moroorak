@@ -40,7 +40,7 @@
     },
     "footer": {
       "tagline": "مرورک — همراه روزانه‌ات",
-      "credit": "ساخته شده توسط امیر"
+      "credit": "ساخته شده توسط Learning whit 12"
     }
   },
   "journal": {
@@ -182,7 +182,11 @@
       "reset": "ریست",
       "focusBtn": "تمرکز",
       "shortBreakBtn": "استراحت کوتاه",
-      "longBreakBtn": "استراحت بلند"
+      "longBreakBtn": "استراحت بلند",
+      "notifFocusDone": "🍅 پومودورو تموم شد!",
+      "notifFocusDoneBody": "آفرین! وقت استراحته ☕",
+      "notifBreakDone": "⚡ استراحت تموم شد!",
+      "notifBreakDoneBody": "بریم دوباره تمرکز کنیم 💪"
     },
     "tips": {
       "badge": "روش کار پومودورو",
@@ -259,6 +263,16 @@
     "emailLabel": "ایمیل",
     "tagLabel": "تگ من",
     "saving": "در حال ذخیره...",
-    "save": "ذخیره تغییرات"
+    "save": "ذخیره تغییرات",
+    "browserNotifications": "اعلان‌های مرورگر"
+  },
+  "notifications": {
+    "notSupported": "مرورگر شما از نوتیفیکیشن پشتیبانی نمی‌کند.",
+    "permissionDenied": "اجازه ارسال نوتیفیکیشن داده نشد.",
+    "activated": "نوتیفیکیشن‌ها فعال شدند!",
+    "error": "خطا در فعال‌سازی نوتیفیکیشن.",
+    "active": "نوتیفیکیشن‌ها فعال است",
+    "activating": "در حال فعال‌سازی...",
+    "activate": "فعال‌سازی نوتیفیکیشن"
   }
 }

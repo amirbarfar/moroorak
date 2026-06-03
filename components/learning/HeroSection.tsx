@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
-import { Plus, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import HeroCard from "@/components/ui/hero-card";
 
 interface HeroSectionProps {
@@ -44,7 +44,7 @@ export default function HeroSection({ todayCount, weekCount, totalCount, onAdd }
                 { label: t("thisWeek"), value: String(weekCount) },
                 { label: t("total"), value: String(totalCount) },
               ]}
-              action={{ label: t("addNew"), icon: <Plus className="h-5 w-5" />, onClick: onAdd }}
+              action={{ label: t("addNew"), onClick: onAdd }}
             />
           </div>
 
