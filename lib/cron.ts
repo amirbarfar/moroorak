@@ -28,9 +28,10 @@ cron.schedule('* * * * *', async () => {
   const time = nowHHMM();
   const date = today();
 
+  
   const reminders = await prisma.reminder.findMany({
     where: {
-      enabled: true,  
+      enabled: true,
       time,
       OR: [
         { lastNotifiedDate: null },
