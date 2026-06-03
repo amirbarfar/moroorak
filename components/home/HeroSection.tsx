@@ -63,7 +63,7 @@ export default function HeroSection({ date, features }: HeroSectionProps) {
           <p className="text-muted-foreground/60 text-lg font-medium mb-2 tracking-wide">همه ابزارات</p>
           <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[1.05]">
             <span
-              className="bg-clip-text text-transparent"
+              className="text-primary"
               style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--foreground)) 30%, hsl(var(--foreground)/0.4))" }}
             >
               یه جا،
