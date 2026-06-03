@@ -14,11 +14,11 @@ export async function sendOtpEmail(to: string, otp: string) {
   await transporter.sendMail({
     from: `"مرورک" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
     to,
-    subject: "کد ورود به مروارک",
+    subject: "کد ورود به مرورک",
     html: `
       <div dir="rtl" style="font-family: Tahoma, Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #f9f9f9; border-radius: 12px;">
         <h2 style="color: #1a1a1a; margin-bottom: 8px;">کد ورود شما</h2>
-        <p style="color: #555; margin-bottom: 24px;">برای ورود به مروارک از کد زیر استفاده کن:</p>
+        <p style="color: #555; margin-bottom: 24px;">برای ورود به مرورک از کد زیر استفاده کن:</p>
         <div style="background: #fff; border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; text-align: center; letter-spacing: 12px; font-size: 36px; font-weight: bold; color: #111;">
           ${otp}
         </div>
