@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import ServiceWorker from "@/components/ServiceWorker";
 import type { Metadata } from "next";
 
+
 export const metadata: Metadata = {
   title: "مروارک",
   description: "اپ بهره‌وری شخصی",
