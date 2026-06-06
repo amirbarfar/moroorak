@@ -1,12 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   BookOpen, Calendar, Bell, Clock,
   Home, Pencil, ChevronLeft, ChevronRight,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import SendOtp from "@/components/auth/SendOtp";
 import VerifyOtp from "@/components/auth/VerifyOtp";
@@ -27,6 +27,7 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const tNav = useTranslations("sidebar");
   const { isAuthenticated, user, logout, loading, refetch } = useAuth();
 
@@ -35,7 +36,11 @@ export default function Sidebar() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [authStep, setAuthStep] = useState<"sendOtp" | "verifyOtp">("sendOtp");
   const [userEmail, setUserEmail] = useState("");
-  const [mobileExpanded, setMobileExpanded] = useState(true);
+  const [mobileExpanded, setMobileExpanded] = useState(false);
+
+  useEffect(() => {
+    setMobileExpanded(false);
+  }, [pathname]);
 
   const handleAuthRequired = () => {
     toast.error("برای دسترسی به این بخش ابتدا وارد شوید", {
@@ -43,6 +48,17 @@ export default function Sidebar() {
       style: { fontFamily: "inherit", direction: "rtl" },
     });
     setShowAuthModal(true);
+  };
+
+  const handleMobileNavigation = (href: string, isProtected: boolean) => {
+    if (isProtected && !isAuthenticated) {
+      handleAuthRequired();
+      return;
+    }
+    
+    setMobileExpanded(false);
+    
+    router.push(href);
   };
 
   const handleSendOtpSuccess = (email: string) => {
@@ -142,6 +158,7 @@ export default function Sidebar() {
                 protected={item.protected}
                 isAuthenticated={isAuthenticated}
                 onAuthRequired={handleAuthRequired}
+                onMobileNavigate={handleMobileNavigation}
               />
             ))}
           </nav>
@@ -187,14 +204,13 @@ export default function Sidebar() {
         </>
       )}
       <ProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
+      
       {showLogoutConfirm && (
         <LogoutModal
           onConfirm={handleLogout}
           onCancel={() => setShowLogoutConfirm(false)}
         />
       )}
-      <div className="md:mr-20" />
-      <div className={`md:hidden transition-all duration-300 ${mobileExpanded ? "mr-52" : "mr-0"}`} />
     </>
   );
 }

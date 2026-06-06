@@ -12,6 +12,7 @@ interface NavItemProps {
   protected?: boolean;
   isAuthenticated: boolean;
   onAuthRequired: () => void;
+  onMobileNavigate?: (href: string, isProtected: boolean) => void;
 }
 
 export default function NavItem({
@@ -23,7 +24,9 @@ export default function NavItem({
   protected: isProtected,
   isAuthenticated,
   onAuthRequired,
+  onMobileNavigate,
 }: NavItemProps) {
+  
   if (variant === "desktop") {
     return (
       <Link
@@ -47,14 +50,25 @@ export default function NavItem({
     );
   }
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onMobileNavigate) {
+      e.preventDefault();
+      onMobileNavigate(href, isProtected || false);
+    } 
+    else if (isProtected && !isAuthenticated) {
+      e.preventDefault();
+      onAuthRequired();
+    }
+  };
+
   return (
     <Link
-      href={isProtected && !isAuthenticated ? "#" : href}
-      onClick={isProtected && !isAuthenticated ? (e) => { e.preventDefault(); onAuthRequired(); } : undefined}
+      href={isProtected && !isAuthenticated && !onMobileNavigate ? "#" : href}
+      onClick={handleClick}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 mx-2 ${
         isActive
           ? "text-primary bg-primary/10 font-semibold"
-          : "text-muted-foreground"
+          : "text-muted-foreground hover:bg-accent/50"
       }`}
     >
       <Icon className="h-5 w-5 shrink-0" />
