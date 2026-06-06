@@ -102,10 +102,6 @@ export default function SendOtp({ isOpen, onClose, onSuccess }: SendOtpProps) {
           >
             {loading ? "در حال ارسال..." : t("continue")}
           </button>
-
-          <div className="text-center text-xs text-muted-foreground">
-            {t("agreeText")}
-          </div>
         </form>
       </div>
     </div>

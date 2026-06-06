@@ -130,7 +130,7 @@ export default function VerifyOtp({ isOpen, onClose, email, onSuccess, onEditEma
           <button
             onClick={handleVerify}
             disabled={loading || otp.length !== 6}
-            className="w-11/12 mx-auto bg-primary text-primary-foreground py-3 rounded-xl font-medium hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-11/12 max-md:w-full mx-auto bg-primary text-primary-foreground py-3 rounded-xl font-medium hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? t("checking") : t("verify")}
           </button>
